@@ -34,6 +34,49 @@ mapUtilsService.$inject = ['$q'];(function () {
 
 })();
 
+/*global angular, Microsoft */
+
+function angularBingMapsProvider() {
+    'use strict';
+
+    var defaultMapOptions = {};
+    var centerBindEvent = 'viewchangeend';
+
+    function setDefaultMapOptions(usersOptions) {
+        defaultMapOptions = usersOptions;
+    }
+
+    function getDefaultMapOptions() {
+        return defaultMapOptions;
+    }
+
+    function bindCenterRealtime(_bindCenterRealtime) {
+        if(_bindCenterRealtime) {
+            centerBindEvent = 'viewchange';
+        } else {
+            centerBindEvent = 'viewchangeend';
+        }
+    }
+
+    function getCenterBindEvent() {
+        return centerBindEvent;
+    }
+
+    return {
+        setDefaultMapOptions: setDefaultMapOptions,
+        bindCenterRealtime: bindCenterRealtime,
+        $get: function() {
+            return {
+                getDefaultMapOptions: getDefaultMapOptions,
+                getCenterBindEvent: getCenterBindEvent
+            };
+        }
+    };
+
+}
+
+angular.module('angularBingMaps.providers').provider('angularBingMaps', angularBingMapsProvider);
+
 /*global angular, Microsoft, DrawingTools, console*/
 
 function drawingToolsDirective(MapUtils) {
@@ -369,7 +412,7 @@ function polygonDirective(MapUtils) {
 
         scope.$watch('options', function (newOptions) {
             polygon.setOptions(newOptions);
-        });
+        }, true);
         scope.$watch('locations', function() {
             generateBingMapLocations();
             polygon.setLocations(bingMapLocations);
@@ -444,7 +487,7 @@ function polylineDirective(MapUtils) {
 
         scope.$watch('options', function (newOptions) {
             polyline.setOptions(newOptions);
-        });
+        }, true);
         scope.$watch('locations', function() {
             generateBingMapLocations();
             polyline.setLocations(bingMapLocations);
@@ -930,49 +973,6 @@ function mapUtilsService($q) {
 }
 
 angular.module('angularBingMaps.services').service('MapUtils', mapUtilsService);
-
-/*global angular, Microsoft */
-
-function angularBingMapsProvider() {
-    'use strict';
-
-    var defaultMapOptions = {};
-    var centerBindEvent = 'viewchangeend';
-
-    function setDefaultMapOptions(usersOptions) {
-        defaultMapOptions = usersOptions;
-    }
-
-    function getDefaultMapOptions() {
-        return defaultMapOptions;
-    }
-
-    function bindCenterRealtime(_bindCenterRealtime) {
-        if(_bindCenterRealtime) {
-            centerBindEvent = 'viewchange';
-        } else {
-            centerBindEvent = 'viewchangeend';
-        }
-    }
-
-    function getCenterBindEvent() {
-        return centerBindEvent;
-    }
-
-    return {
-        setDefaultMapOptions: setDefaultMapOptions,
-        bindCenterRealtime: bindCenterRealtime,
-        $get: function() {
-            return {
-                getDefaultMapOptions: getDefaultMapOptions,
-                getCenterBindEvent: getCenterBindEvent
-            };
-        }
-    };
-
-}
-
-angular.module('angularBingMaps.providers').provider('angularBingMaps', angularBingMapsProvider);
 
 },{"color":6}],2:[function(require,module,exports){
 /* MIT license */

@@ -28,7 +28,7 @@ function polygonDirective(MapUtils) {
 
         scope.$watch('options', function (newOptions) {
             polygon.setOptions(newOptions);
-        });
+        }, true);
         scope.$watch('locations', function() {
             generateBingMapLocations();
             polygon.setLocations(bingMapLocations);

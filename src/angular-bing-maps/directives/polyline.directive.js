@@ -24,7 +24,7 @@ function polylineDirective(MapUtils) {
 
         scope.$watch('options', function (newOptions) {
             polyline.setOptions(newOptions);
-        });
+        }, true);
         scope.$watch('locations', function() {
             generateBingMapLocations();
             polyline.setLocations(bingMapLocations);
